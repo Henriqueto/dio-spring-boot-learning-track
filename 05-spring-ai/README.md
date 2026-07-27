@@ -1,85 +1,74 @@
-# DIO Spring Boot - Final Project 05: Spring AI (budgeting)
+# 💰 DIO Spring Boot Learning Track - Módulo Spring AI (Budgeting API)
 
-## Introduction
+Este repositório contém a minha versão da aplicação desenvolvida durante a trilha de Spring Boot da [Digital Innovation One (DIO)](https://www.dio.me/).
 
-This final module applies Spring AI in a budgeting API while preserving the same layered architecture used across the track.
+---
 
-The goal is to integrate AI capabilities without bypassing domain and use case boundaries.
+## 📋 O que o projeto faz
 
-## Code Context
+O projeto é uma API RESTful de gerenciamento de orçamentos e despesas pessoais (`Budgeting Application`). A aplicação permite o cadastro, controle e categorização de transações financeiras (como compras de mercado, gastos automotivos, farmácia, etc.), garantindo regras de validação sobre os valores inseridos.
 
-The project processes voice commands to create and query financial transactions.
+---
 
-Primary flow:
+## 🛠️ Tecnologias Utilizadas
 
-1. Client uploads an audio file.
-2. Audio is transcribed into text.
-3. The model selects an application tool/use case.
-4. The use case persists or queries transaction data.
-5. The final response is converted to audio.
+* **Java 21**
+* **Spring Boot 3.3**
+* **Spring Data JPA / Hibernate**
+* **H2 Database** (Banco de dados em memória para desenvolvimento/testes)
+* **Gradle** (Gerenciador de dependências e build)
+* **PowerShell / cURL** (Testes de requisições HTTP)
 
-## Project Structure
+---
 
-- `src/main/java/dio/budgeting/domain`
-  - Domain model and repository contract.
-- `src/main/java/dio/budgeting/application`
-  - Use cases used by both REST and AI tool calling.
-- `src/main/java/dio/budgeting/infrastructure`
-  - HTTP adapters, JPA adapters, and integration glue.
+## 💡 Melhoria Implementada
 
-## Module-Specific Topics
+Foi desenvolvida e integrada uma **Regra de Negócio** na camada de domínio/serviço para controle de limite máximo de transações:
 
-### Speech-to-text
+* **Classe de Exceção de Domínio:** Criação da classe `BusinessRuleException`.
+* **Validação de Limite Financeiro:** Nenhuma transação pode ser cadastrada com valor superior a **R$ 5.000,00** (`500000` centavos).
+* **Tratamento de Erro na API:** Caso o limite seja ultrapassado, a API intercepta a exceção e responde com status HTTP `400 Bad Request` e uma mensagem clara ao usuário.
 
-- Uses `TranscriptionModel` for audio transcription.
-- Model settings are configured in `application.properties`.
+---
 
-### Tool calling
+## 🚀 Como Executar a Aplicação
 
-- `ChatClient` registers use-case tools.
-- `@Tool` methods expose business capabilities to the model.
+1. Certifique-se de ter o Java 21 ou superior instalado.
+2. Clone o repositório:
+   ```bash
+   git clone https://github.com/Henriqueto/dio-spring-boot-learning-track.git
+Acesse a pasta do módulo 05-spring-ai:
 
-### Text-to-speech
+Bash
+cd dio-spring-boot-learning-track/05-spring-ai
+Execute o projeto usando o Wrapper do Gradle:
 
-- `TextToSpeechModel` produces MP3 output from final text.
-- AI endpoint returns generated audio.
+Windows (PowerShell/CMD):
 
-## Spring AI Documentation
+PowerShell
+.\gradlew.bat bootRun
+Linux/Mac:
 
-- Spring AI Reference: https://docs.spring.io/spring-ai/reference/index.html
-- ChatModel API: https://docs.spring.io/spring-ai/reference/api/chatmodel.html
-- ChatClient API: https://docs.spring.io/spring-ai/reference/api/chatclient.html
-- Tools API: https://docs.spring.io/spring-ai/reference/api/tools.html
-- Audio Transcriptions API: https://docs.spring.io/spring-ai/reference/api/audio/transcriptions.html
-- Audio Speech API: https://docs.spring.io/spring-ai/reference/api/audio/speech.html
-
-## Shared Architecture References
-
-Common architecture concepts are documented in the root README:
-
-- [DDD layers](../README.md#ddd-layered-architecture)
-- [Class vs record](../README.md#java-class-vs-java-record-in-domain-modeling)
-- [Strong typed identifiers](../README.md#strong-typed-identifiers)
-- [Repository pattern](../README.md#repository-pattern)
-- [Use cases and Clean Architecture](../README.md#use-cases-and-clean-architecture)
-- [Docker Compose support](../README.md#docker-compose-support-in-development)
-
-## How to Run
-
-Set your OpenAI API key:
-
-```bash
-export OPENAI_API_KEY="your_api_key_here"
-```
-
-Run the application and tests:
-
-```bash
+Bash
 ./gradlew bootRun
-./gradlew test
-```
+🧪 Como Testar o Fluxo Principal
+Com a aplicação rodando (Tomcat started on port 8080), abra um terminal e execute os testes de integração abaixo:
 
-## Notes
+1. Teste de Sucesso (Transação permitida <= R$ 5.000,00):
+PowerShell
+Invoke-RestMethod -Uri "http://localhost:8080/transactions" -Method Post -Headers @{"Content-Type"="application/json"} -Body '{"description": "Mercado", "amount": 10000, "category": "GROCERIES"}'
+Retorno Esperado: Status 200 OK trazendo a transação persistida no banco com seu id UUID gerado.
 
-- Educational final project focused on AI plus architectural discipline.
-- External provider integration tests may require active credentials.
+2. Teste de Validação da Regra de Negócio (> R$ 5.000,00):
+PowerShell
+Invoke-RestMethod -Uri "http://localhost:8080/transactions" -Method Post -Headers @{"Content-Type"="application/json"} -Body '{"description": "Notebook", "amount": 600000, "category": "AUTO"}'
+Retorno Esperado: Status 400 Bad Request bloqueando o cadastro da transação.
+
+🎓 O que aprendi durante o desafio
+Domain-Driven Design (DDD) & Regras de Negócio: Entender onde posicionar as validações de domínio para evitar que dados inconsistentes cheguem ao banco.
+
+Tratamento de Exceções Customizadas: Como integrar exceções de negócio com os códigos de status HTTP corretos no Spring MVC.
+
+Testes de API via CLI: Execução e validação de rotas RESTful utilizando utilitários de linha de comando (Invoke-RestMethod / curl).
+
+Gerenciamento de Persistência com H2: Configuração de perfil de banco em memória para agilizar o ciclo de desenvolvimento e testes locais.
