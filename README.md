@@ -68,10 +68,13 @@ Com a aplicação rodando (`Tomcat started on port 8080`), abra um terminal e ex
 
 ```powershell
 Invoke-RestMethod -Uri "http://localhost:8080/transactions" -Method Post -Headers @{"Content-Type"="application/json"} -Body '{"description": "Mercado", "amount": 10000, "category": "GROCERIES"}'
+```
 Retorno Esperado: Status 200 OK trazendo a transação persistida no banco com seu id UUID gerado.
 
 2. Teste de Validação da Regra de Negócio (> R$ 5.000,00):
+```powershell
 Invoke-RestMethod -Uri "http://localhost:8080/transactions" -Method Post -Headers @{"Content-Type"="application/json"} -Body '{"description": "Notebook", "amount": 600000, "category": "AUTO"}'
+```
 Retorno Esperado: Status 400 Bad Request bloqueando o cadastro da transação.
 
 🎓 O que aprendi durante o desafio
