@@ -31,20 +31,20 @@ Foi desenvolvida e integrada uma **Regra de Negócio** na camada de domínio/ser
 
 ---
 
+```markdown
 ## 🚀 Como Executar a Aplicação
 
 1. Certifique-se de ter o Java 21 ou superior instalado.
 2. Clone o repositório:
 
 ```bash
-git clone [https://github.com/Henriqueto/dio-spring-boot-learning-track.git](https://github.com/Henriqueto/dio-spring-boot-learning-track.git)
+git clone https://github.com/Henriqueto/dio-spring-boot-learning-track.git
 
 Acesse a pasta do módulo 05-spring-ai:
 Bash
 cd dio-spring-boot-learning-track/05-spring-ai
 
 Execute o projeto usando o Wrapper do Gradle:
-
 Windows (PowerShell/CMD):
 PowerShell
 .\gradlew.bat bootRun
