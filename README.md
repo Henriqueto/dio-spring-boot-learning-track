@@ -1,6 +1,6 @@
 # 💰 DIO Spring Boot Learning Track - Módulo Spring AI (Budgeting API)
 
-Este repositório contém a minha versão da aplicação desenvolvida durante a trilha de Spring Boot da [Digital Innovation One (DIO)](https://www.dio.me/).
+Este repositório contém a minha versão da aplicação desenvolvida durante a trilha de Spring Boot da NTT Data.
 
 ---
 
