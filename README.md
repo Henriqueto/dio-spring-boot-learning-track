@@ -1,136 +1,74 @@
-# DIO Spring Boot Learning Track
+# 💰 DIO Spring Boot Learning Track - Módulo Spring AI (Budgeting API)
 
-This repository contains a DIO Spring Boot learning track organized as incremental modules.
-
-The track starts with architecture foundations and progressively moves through web APIs, data access, security, service integration, and AI-enabled workflows.
-
-<img width="2752" height="1536" alt="unnamed" src="https://github.com/user-attachments/assets/a7bcbe19-4d0c-4395-8696-8c64be22764f" />
-
-## Modules
-
-- [`00-domain-driven-design`](00-domain-driven-design/README.md)  
-  DDD foundations with a catalog domain and no web layer.
-- [`01-spring-web`](01-spring-web/README.md)  
-  REST API design with Spring Web and API documentation with Spring REST Docs.
-- [`02-spring-data`](02-spring-data/README.md)  
-  Data access in a multi-context application using MySQL, MongoDB, Redis, and PostgreSQL.
-- [`03-spring-security`](03-spring-security/README.md)  
-  Authentication and authorization with Spring Security in a proposal management API.
-- [`04-spring-cloud-openfeign`](04-spring-cloud-openfeign/README.md)  
-  External service integration (KYC/AML) using Spring Cloud OpenFeign and resilience patterns.
-- [`05-spring-ai`](05-spring-ai/README.md)  
-  Final project using Spring AI for speech-to-text, tool calling, and text-to-speech.
-
-## Recommended Study Order
-
-1. [`00-domain-driven-design`](00-domain-driven-design/README.md)
-2. [`01-spring-web`](01-spring-web/README.md)
-3. [`02-spring-data`](02-spring-data/README.md)
-4. [`03-spring-security`](03-spring-security/README.md)
-5. [`04-spring-cloud-openfeign`](04-spring-cloud-openfeign/README.md)
-6. [`05-spring-ai`](05-spring-ai/README.md)
+Este repositório contém a minha versão da aplicação desenvolvida durante a trilha de Spring Boot da [Digital Innovation One (DIO)](https://www.dio.me/).
 
 ---
 
-## Shared Architecture Guide
+## 📋 O que o projeto faz
 
-The sections below consolidate architecture topics that are intentionally reused across modules.
-
-### DDD Layered Architecture
-
-Most modules follow the same conceptual split:
-
-```text
-domain/          -> business model, invariants, contracts
-application/     -> use cases, orchestration, application policies
-infrastructure/  -> adapters (HTTP, persistence, external clients, framework glue)
-```
-
-Why this matters:
-
-- `domain` stays focused on business language and rules, not framework details.
-- `application` coordinates domain behavior for specific user/business actions.
-- `infrastructure` can change (database, web transport, external APIs) without forcing core business rewrites.
-
-This separation reduces coupling and supports long-term maintainability.
-
-### Java Class vs Java Record in Domain Modeling
-
-A practical guideline used across the track:
-
-- Use `class` for entities/aggregates that have identity and may evolve behavior over time.
-- Use `record` for immutable value objects and DTO-style transport models.
-
-Design trade-offs:
-
-- `class` supports richer lifecycle behavior and controlled mutation.
-- `record` reduces boilerplate and makes immutability explicit.
-
-This distinction improves code intent and keeps domain concepts clearer.
-
-### Strong Typed Identifiers
-
-Instead of passing raw primitives (`UUID`, `String`) everywhere, modules wrap identifiers in explicit types such as `BookId`, `TaskId`, `ProposalId`, and `TransactionId`.
-
-Benefits:
-
-- Better compile-time safety (fewer accidental ID mix-ups).
-- More expressive signatures (`findById(TaskId id)` communicates intent).
-- Cleaner evolution path for ID rules and validation.
-
-### Repository Pattern
-
-The repository contract belongs to the business side, while technology-specific implementations stay in infrastructure.
-
-Pattern used in this repository:
-
-- Domain contract: `XxxRepository` in `domain/`.
-- Adapter implementation: JPA/in-memory/etc. in `infrastructure/`.
-
-Architectural impact:
-
-- Business logic depends on abstractions, not persistence frameworks.
-- Switching storage technology becomes an adapter change, not a domain rewrite.
-- Unit testing use cases becomes simpler with fake/mock repositories.
-
-### Use Cases and Clean Architecture
-
-Each use case models one business capability (for example, create task, list proposals, analyze company risk).
-
-Common flow:
-
-1. Controller/listener receives an external request.
-2. It calls one application use case.
-3. The use case orchestrates domain objects and repository/gateway contracts.
-4. Infrastructure adapters handle persistence or external integrations.
-
-Why this is important:
-
-- Strong single-responsibility boundaries.
-- Easier testability and refactoring.
-- Better readability of business workflows.
-
-### Docker Compose Support in Development
-
-Several modules include `compose.yml` and Spring Boot Docker Compose support.
-
-Typical local development role:
-
-- Start required infra services (database/cache/message dependencies).
-- Keep local setup reproducible for all students.
-- Reduce onboarding friction by standardizing environment dependencies.
-
-Note: exact behavior can vary by module configuration and runtime profile.
+O projeto é uma API RESTful de gerenciamento de orçamentos e despesas pessoais (`Budgeting Application`). A aplicação permite o cadastro, controle e categorização de transações financeiras (como compras de mercado, gastos automotivos, farmácia, etc.), garantindo regras de validação sobre os valores inseridos.
 
 ---
 
-## Quick Start
+## 🛠️ Tecnologias Utilizadas
 
-Choose a module and run its local instructions:
+* **Java 21**
+* **Spring Boot 3.3**
+* **Spring Data JPA / Hibernate**
+* **H2 Database** (Banco de dados em memória para desenvolvimento/testes)
+* **Gradle** (Gerenciador de dependências e build)
+* **PowerShell / cURL** (Testes de requisições HTTP)
 
-```bash
-cd 01-spring-web
-./gradlew test
-```
+---
 
-For module-specific details, always check each module README from the links above.
+## 💡 Melhoria Implementada
+
+Foi desenvolvida e integrada uma **Regra de Negócio** na camada de domínio/serviço para controle de limite máximo de transações:
+
+* **Classe de Exceção de Domínio:** Criação da classe `BusinessRuleException`.
+* **Validação de Limite Financeiro:** Nenhuma transação pode ser cadastrada com valor superior a **R$ 5.000,00** (`500000` centavos).
+* **Tratamento de Erro na API:** Caso o limite seja ultrapassado, a API intercepta a exceção e responde com status HTTP `400 Bad Request` e uma mensagem clara ao usuário.
+
+---
+
+## 🚀 Como Executar a Aplicação
+
+1. Certifique-se de ter o Java 21 ou superior instalado.
+2. Clone o repositório:
+   ```bash
+   git clone https://github.com/Henriqueto/dio-spring-boot-learning-track.git
+Acesse a pasta do módulo 05-spring-ai:
+
+Bash
+cd dio-spring-boot-learning-track/05-spring-ai
+Execute o projeto usando o Wrapper do Gradle:
+
+Windows (PowerShell/CMD):
+
+PowerShell
+.\gradlew.bat bootRun
+Linux/Mac:
+
+Bash
+./gradlew bootRun
+🧪 Como Testar o Fluxo Principal
+Com a aplicação rodando (Tomcat started on port 8080), abra um terminal e execute os testes de integração abaixo:
+
+1. Teste de Sucesso (Transação permitida <= R$ 5.000,00):
+PowerShell
+Invoke-RestMethod -Uri "http://localhost:8080/transactions" -Method Post -Headers @{"Content-Type"="application/json"} -Body '{"description": "Mercado", "amount": 10000, "category": "GROCERIES"}'
+Retorno Esperado: Status 200 OK trazendo a transação persistida no banco com seu id UUID gerado.
+
+2. Teste de Validação da Regra de Negócio (> R$ 5.000,00):
+PowerShell
+Invoke-RestMethod -Uri "http://localhost:8080/transactions" -Method Post -Headers @{"Content-Type"="application/json"} -Body '{"description": "Notebook", "amount": 600000, "category": "AUTO"}'
+Retorno Esperado: Status 400 Bad Request bloqueando o cadastro da transação.
+
+🎓 O que aprendi durante o desafio
+Domain-Driven Design (DDD) & Regras de Negócio: Entender onde posicionar as validações de domínio para evitar que dados inconsistentes cheguem ao banco.
+
+Tratamento de Exceções Customizadas: Como integrar exceções de negócio com os códigos de status HTTP corretos no Spring MVC.
+
+Testes de API via CLI: Execução e validação de rotas RESTful utilizando utilitários de linha de comando (Invoke-RestMethod / curl).
+
+Gerenciamento de Persistência com H2: Configuração de perfil de banco em memória para agilizar o ciclo de desenvolvimento e testes locais.
