@@ -1,6 +1,6 @@
 # 💰 DIO Spring Boot Learning Track - Módulo Spring AI (Budgeting API)
 
-Este repositório contém a minha versão da aplicação desenvolvida durante a trilha de Spring Boot da NTT Data.
+Este repositório contém a minha versão da aplicação desenvolvida durante a trilha de Spring Boot da DIO.
 
 ---
 
@@ -35,8 +35,8 @@ Foi desenvolvida e integrada uma **Regra de Negócio** na camada de domínio/ser
 
 1. Certifique-se de ter o Java 21 ou superior instalado.
 2. Clone o repositório:
-   ```bash
-   git clone https://github.com/Henriqueto/dio-spring-boot-learning-track.git
+```bash
+git clone https://github.com/Henriqueto/dio-spring-boot-learning-track.git
 Acesse a pasta do módulo 05-spring-ai:
 
 Bash
