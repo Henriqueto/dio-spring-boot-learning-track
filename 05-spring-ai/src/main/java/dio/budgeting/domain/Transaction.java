@@ -16,5 +16,17 @@ public class Transaction {
         this.description = description;
         this.amount = amount;
         this.category = category;
+        
+        // Valida o limite no momento da criação
+        validateLimit();
+    }
+    
+    public void validateLimit() {
+        // Limite diário de 5.000,00 em centavos (500000)
+        long maxLimit = 500000L; 
+        
+        if (this.amount > maxLimit) {
+            throw new BusinessRuleException("O valor da transação ultrapassa o limite permitido de R$ 5.000,00.");
+        }
     }
 }

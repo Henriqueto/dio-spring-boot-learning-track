@@ -5,6 +5,8 @@ import dio.budgeting.application.PersistTransactionUseCase;
 import dio.budgeting.domain.Category;
 import dio.budgeting.infrastructure.http.request.TransactionRequest;
 import dio.budgeting.infrastructure.http.response.TransactionResponse;
+import dio.budgeting.domain.BusinessRuleException;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.ai.audio.transcription.TranscriptionModel;
 import org.springframework.ai.audio.tts.TextToSpeechModel;
 import org.springframework.ai.chat.client.ChatClient;
@@ -46,10 +48,13 @@ public class TransactionController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public TransactionResponse createTransaction(@RequestBody TransactionRequest request) {
-        var transaction = persistTransactionUseCase.execute(request.toInput());
-        return TransactionResponse.from(transaction);
+        try {
+            var transaction = persistTransactionUseCase.execute(request.toInput());
+            return TransactionResponse.from(transaction);
+        } catch (BusinessRuleException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 
     @GetMapping("/{category}")
