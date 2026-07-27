@@ -77,11 +77,12 @@ Invoke-RestMethod -Uri "http://localhost:8080/transactions" -Method Post -Header
 ```
 Retorno Esperado: Status 400 Bad Request bloqueando o cadastro da transação.
 
-🎓 O que aprendi durante o desafio
-Domain-Driven Design (DDD) & Regras de Negócio: Entender onde posicionar as validações de domínio para evitar que dados inconsistentes cheguem ao banco.
+## 🎓 O que aprendi durante o desafio
 
-Tratamento de Exceções Customizadas: Como integrar exceções de negócio com os códigos de status HTTP corretos no Spring MVC.
+## Domain-Driven Design (DDD) & Regras de Negócio: Entender onde posicionar as validações de domínio para evitar que dados inconsistentes cheguem ao banco.
 
-Testes de API via CLI: Execução e validação de rotas RESTful utilizando utilitários de linha de comando (Invoke-RestMethod / curl).
+## Tratamento de Exceções Customizadas: Como integrar exceções de negócio com os códigos de status HTTP corretos no Spring MVC.
 
-Gerenciamento de Persistência com H2: Configuração de perfil de banco em memória para agilizar o ciclo de desenvolvimento e testes locais.
+## Testes de API via CLI: Execução e validação de rotas RESTful utilizando utilitários de linha de comando (Invoke-RestMethod / curl).
+
+## Gerenciamento de Persistência com H2: Configuração de perfil de banco em memória para agilizar o ciclo de desenvolvimento e testes locais.
